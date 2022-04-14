@@ -10,9 +10,7 @@ void main(List<String> args){
     switch(pilihan){
       case 1:{number1();break;}
       case 2: {
-        stdout.write("Masukan kata = ");
-        String temp = stdin.readLineSync().toString();
-        split(temp, checkLength(temp));
+        number2("Belajar Flutter");
         stdout.write("\npress enter to continue\n");
         stdin.readLineSync();
         break;
@@ -52,6 +50,21 @@ number1(){
   print("output : "+pertama+" "+kedua+ " "+ketiga+"\n\n");
 }
 
+number2(String text){
+
+    print("contoh = "+text[2]+text[3]);
+    stdout.write("kata 1 = ");
+    for(int i=0;i<=6;i++){
+      stdout.write(text[i]);
+    }
+    print("");
+
+    stdout.write("kata 2 = ");
+    for(int i=8;i<=14;i++){
+      stdout.write(text[i]);
+    }
+    print("");
+}
 
 checkLength(String text){
   int a=0;
