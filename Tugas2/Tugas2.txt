@@ -1,0 +1,64 @@
+Tugas Minggu 1
+ - Revisi pada tugas 1, untuk push ke github, memakai 1 branch saja (main/master)
+	untuk pembedanya dibuat folder saja, misal folder Tugas1, Tugas2, *namaproject* 
+
+ - Buatlah fungsi dengan range yang mengembalikan sebuah list yang berisi angka-angka
+	
+	print(range(1,10)) // [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+  ==========================
+
+ - Buatlah list multidimensi, berisi data-data (ID, Nama, Alamat, Hobi), dan tampilkan semua datanya
+   contoh list:
+	var input = 	[
+			  ["001", "Akhmal Dimas", "Sleman", "Gaming"],
+			  ["002", "Dimas Pratama", "Yogyakata", "Berkebun"],
+				...
+			]
+=================================
+
+ - Ubah procedural ke class beserta setter getter.
+ void main(){
+   double phi, radius;
+   phi = 3.14;
+   radius = 7;
+   
+   var luasLingkaran = phi * radius * radius;
+
+   print(luasLingkaran);
+ }
+
+ - Polymorism dan Constructor
+   Buatlah class bangun_datar, persegi, lingkaran, dan main.dart
+   pada bangun_datar mereturn keliling, luas.
+   pada class persegi, lingkaran akan mengextends bangun_datar.
+   setelah itu masukkan rumus keliling dan luas.
+   jangan lupa constructor pada persegi, lingkaran.
+
+ - Future delay
+    void main(){
+     print("Nama");
+     print("Dimas"); // gunakan nama sendiri
+     print("Saya");
+     
+    ubah output menjadi Nama Saya Dimas, dengan menggunakan Future
+    }
+
+ - async, await, future
+   void main(){
+     print("Menyanyi, mulai");
+     print(line1());
+     print(line2());
+     print(line3());
+   }
+	
+   Buatlah dengan menggunakan async, await, future. dengan output
+   Output:	Menyanyi, mulai
+		// delay 1 detik
+		Pelagi-pelangi alangkah indahmu
+		// delay 2 detik
+		Merah kuning hijau
+		// delay 1 detik
+                dilangit yang biru
+
+ - Buatlah project flutter lalu di push ke github
+ 
