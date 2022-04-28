@@ -1,0 +1,4 @@
+Tugas Minggu 3
+ - Buatlah tampilan menggunakan core component, style, dan navigasi
+   sesuai pada video berikut https://youtu.be/3MOGWXiujkI
+ 
