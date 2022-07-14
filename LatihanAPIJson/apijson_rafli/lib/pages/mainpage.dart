@@ -1,7 +1,8 @@
 import 'dart:convert';
-
 import 'package:apijson_rafli/model/product.dart';
 import 'package:apijson_rafli/pages/detailproduct.dart';
+import 'package:apijson_rafli/pages/login.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -35,6 +36,15 @@ class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text("Hello, "+FirebaseAuth.instance.currentUser!.email.toString()),
+        actions: [
+          TextButton(onPressed: ()async{
+            await FirebaseAuth.instance.signOut()
+            .then((value) => Navigator.pushReplacement(context, MaterialPageRoute(builder: (_)=>LoginPage())));
+          }, child: Text("Sign Out",style: TextStyle(color: Colors.red,fontWeight: FontWeight.bold))),
+        ],
+      ),
       body: SafeArea(
         child: Column(
           children: [

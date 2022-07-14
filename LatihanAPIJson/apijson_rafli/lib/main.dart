@@ -1,8 +1,14 @@
 import 'dart:io';
-
 import 'package:apijson_rafli/pages/mainpage.dart';
+import 'package:firebase_core/firebase_core.dart';
+
+import 'package:apijson_rafli/pages/login.dart';
 import 'package:flutter/material.dart';
-void main() {
+
+
+Future<void> main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(const MyApp());
 }
 
@@ -19,7 +25,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MainPage()
+      home: LoginPage()
     );
   }
 }

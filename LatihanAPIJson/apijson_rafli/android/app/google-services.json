@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "833320723970",
+    "project_id": "belajar-itc",
+    "storage_bucket": "belajar-itc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:833320723970:android:f600ac4689e28668dda91b",
+        "android_client_info": {
+          "package_name": "com.example.apijson_rafli"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "833320723970-5uecdofhsbnqp33u31cebta2l68gmc53.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB6zrdwIFeIhyFERlm-QO-_s_oPpqZT-uo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "833320723970-5uecdofhsbnqp33u31cebta2l68gmc53.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
