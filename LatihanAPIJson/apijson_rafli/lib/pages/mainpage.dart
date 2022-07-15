@@ -6,6 +6,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({ Key? key }) : super(key: key);
@@ -17,10 +19,20 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
   List<Product> listData =[];
   TextEditingController _searchTextFieldController = new TextEditingController();
-  String apiUrl = "https://dummyjson.com/products";
+  ScrollController _scrollController = new ScrollController();
+
+  bool _isLoading =false;
+  bool _isFirstLoading = false;
+
+  int _limit = 5;
+
+  String apiUrl = "https://dummyjson.com/products?limit=";
   Future _getData() async{
     try{
-      var respon = await http.get(Uri.parse(apiUrl));
+      setState(() {
+        _isFirstLoading=true;
+      });
+      var respon = await http.get(Uri.parse(apiUrl+_limit.toString()));
 
       List data = (json.decode(respon.body) as Map<String, dynamic> )["products"];
       //print(data.runtimeType);
@@ -28,11 +40,58 @@ class _MainPageState extends State<MainPage> {
       data.forEach((element) {
         listData.add(Product.fromJson(element));
       });
+      setState(() {
+        listData.isNotEmpty;
+        _isFirstLoading=false;
+      });
     }
     catch(er){
       print("=========\n\n$er\n\n========");
     }
   }
+
+  void _getMoreData() async{
+    try{
+      setState(() {
+        _isLoading=true;
+      });
+      var respon = await http.get(Uri.parse(apiUrl+"5&skip=5"));
+
+      List data = (json.decode(respon.body) as Map<String, dynamic> )["products"];
+      //print(data.runtimeType);
+      //print(data.elementAt(0));
+      data.forEach((element) {
+        listData.add(Product.fromJson(element));
+      });
+      setState(() {
+        listData.isNotEmpty;
+        _limit+=5;
+        _isLoading=false;
+      });
+    }
+    catch(er){
+      print("=========\n\n$er\n\n========");
+    }
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState\
+    _getData();
+    super.initState();
+    _scrollController.addListener(() {
+      if(_scrollController.position.extentAfter<=0){
+        _getMoreData();
+      }
+    });
+  }
+
+  @override
+  void dispose(){
+    super.dispose();
+    _scrollController.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,7 +104,7 @@ class _MainPageState extends State<MainPage> {
           }, child: Text("Sign Out",style: TextStyle(color: Colors.red,fontWeight: FontWeight.bold))),
         ],
       ),
-      body: SafeArea(
+      body: _isFirstLoading==true ? CircularProgressIndicator() : SafeArea(
         child: Column(
           children: [
             Container(
@@ -76,18 +135,34 @@ class _MainPageState extends State<MainPage> {
                 ],
               ),
             ),
-          Flexible(
-            child: FutureBuilder(
-              future: _getData(),
-              builder: ((context,snapshot) {
-                return snapshot.connectionState==ConnectionState.waiting ? Center(child: CircularProgressIndicator(),) : ListView.builder(
-                  itemCount: listData.length,
-                  itemBuilder: (context,index)=>ItemProduct(listData.elementAt(index))
-                );
-              }),
+            Expanded(
+              child: ListView.builder(
+                itemCount: listData == null? 0 : listData.length,
+                controller: _scrollController,
+                physics: AlwaysScrollableScrollPhysics(),
+                itemBuilder: (context,index){
+                  return ItemProduct(listData.elementAt(index));
+                }
+              ),
+            ),
+          //simpanan  
+          // Flexible(
+          //   child: FutureBuilder(
+          //     builder: ((context,snapshot) {
+          //       return snapshot.connectionState==ConnectionState.waiting ? Center(child: CircularProgressIndicator(),) : ListView.builder(
+          //         itemCount: listData.length,
+          //         controller: _scrollController,
+          //         itemBuilder: (context,index)=>ItemProduct(listData.elementAt(index))
+          //       );
+          //     }),
+          //   ),
+          // )\
+          _isLoading==false? SizedBox(height: 5,):Center(
+            child: Container(
+              margin: EdgeInsets.only(top: 10, bottom: 10),
+              child: CircularProgressIndicator(),
             ),
           )
-
           ],
         )
       ),
