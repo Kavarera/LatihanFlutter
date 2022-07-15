@@ -58,7 +58,7 @@ class _MainPageState extends State<MainPage> {
       setState(() {
         _isLoading=true;
       });
-      var respon = await http.get(Uri.parse(apiUrl+"5&skip=5"));
+      var respon = await http.get(Uri.parse(apiUrl+"5&skip="+_limit.toString()));
 
       List data = (json.decode(respon.body) as Map<String, dynamic> )["products"];
       //print(data.runtimeType);
@@ -164,7 +164,7 @@ class _MainPageState extends State<MainPage> {
                   child: Text("Search"),
                   ),
                 ],
-                
+
               ),
             ),
             Flexible(
