@@ -17,6 +17,16 @@ class _LoginPageState extends State<LoginPage> {
   TextEditingController _passwordController = new TextEditingController();
   FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _firebaseAuth.authStateChanges().listen((User? user) {
+      if(user!=null){
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>MainPage()));
+      }
+    });
+  }
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
