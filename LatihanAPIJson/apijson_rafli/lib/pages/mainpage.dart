@@ -23,6 +23,7 @@ class _MainPageState extends State<MainPage> {
 
   bool _isLoading =false;
   bool _isFirstLoading = false;
+  bool _searchMode = false;
 
   int _limit = 5;
 
@@ -30,6 +31,8 @@ class _MainPageState extends State<MainPage> {
   Future _getData() async{
     try{
       setState(() {
+        _limit=5;
+        _searchMode=false;
         _isFirstLoading=true;
       });
       var respon = await http.get(Uri.parse(apiUrl+_limit.toString()));
@@ -74,13 +77,39 @@ class _MainPageState extends State<MainPage> {
     }
   }
 
+  void _searchData(String query) async {
+    const String _apiSearch = "https://dummyjson.com/products/search?q=";
+    try{
+      setState(() {
+        _isLoading=true;
+        listData.clear();
+      });
+      var respon = await http.get(Uri.parse(_apiSearch+query));
+
+      List data = (json.decode(respon.body) as Map<String, dynamic> )["products"];
+      //print(data.runtimeType);
+      //print(data.elementAt(0));
+      data.forEach((element) {
+        listData.add(Product.fromJson(element));
+      });
+      setState(() {
+        listData.isNotEmpty;
+        _limit+=5;
+        _isLoading=false;
+      });
+    }
+    catch(er){
+      print("=========\n\n$er\n\n========");
+    }
+  }
+
   @override
   void initState() {
     // TODO: implement initState\
     _getData();
     super.initState();
     _scrollController.addListener(() {
-      if(_scrollController.position.extentAfter<=0){
+      if(_scrollController.position.extentAfter<=0&&_searchMode==false){
         _getMoreData();
       }
     });
@@ -126,7 +155,9 @@ class _MainPageState extends State<MainPage> {
                     setState(() {
                       listData.clear();
                       print("--------------------\n\n"+apiUrl);
-                      apiUrl="https://dummyjson.com/products/search?q="+_searchTextFieldController.text;
+                      _searchMode=true;
+                      //apiUrl="https://dummyjson.com/products/search?q="+_searchTextFieldController.text;
+                      _searchTextFieldController.text.isEmpty ? _getData() : _searchData(_searchTextFieldController.text);
                       print(apiUrl);
                     });
                   },
@@ -135,7 +166,7 @@ class _MainPageState extends State<MainPage> {
                 ],
               ),
             ),
-            Expanded(
+            Flexible(
               child: ListView.builder(
                 itemCount: listData == null? 0 : listData.length,
                 controller: _scrollController,
@@ -157,12 +188,11 @@ class _MainPageState extends State<MainPage> {
           //     }),
           //   ),
           // )\
-          _isLoading==false? SizedBox(height: 5,):Center(
-            child: Container(
+          _isLoading==false? SizedBox(height: 5,): Container(
+              color: Colors.transparent,
               margin: EdgeInsets.only(top: 10, bottom: 10),
               child: CircularProgressIndicator(),
             ),
-          )
           ],
         )
       ),
