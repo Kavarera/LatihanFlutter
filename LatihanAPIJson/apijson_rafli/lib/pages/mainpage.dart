@@ -177,23 +177,7 @@ class _MainPageState extends State<MainPage> {
                 }
               ),
             ),
-          //simpanan  
-          // Flexible(
-          //   child: FutureBuilder(
-          //     builder: ((context,snapshot) {
-          //       return snapshot.connectionState==ConnectionState.waiting ? Center(child: CircularProgressIndicator(),) : ListView.builder(
-          //         itemCount: listData.length,
-          //         controller: _scrollController,
-          //         itemBuilder: (context,index)=>ItemProduct(listData.elementAt(index))
-          //       );
-          //     }),
-          //   ),
-          // )\
-          _isLoading==false? SizedBox(height: 5,): Container(
-              color: Colors.transparent,
-              margin: EdgeInsets.only(top: 10, bottom: 10),
-              child: CircularProgressIndicator(),
-            ),
+          _isLoading==false? SizedBox(height: 5,): CircularProgressIndicator()
           ],
         )
       ),
@@ -225,13 +209,16 @@ class _MainPageState extends State<MainPage> {
         child: IntrinsicHeight(
           child: Row(
             children: [
-              Container(
-                margin: EdgeInsets.only(top: 5,bottom: 5),
-                alignment: Alignment.centerLeft,
-                child: CircleAvatar(
-                  backgroundColor: Colors.grey,
-                  backgroundImage: NetworkImage(p.thumbnail),
-                  radius: 50,
+              Hero(
+                tag: p.id.toString(),
+                child: Container(
+                  margin: EdgeInsets.only(top: 5,bottom: 5),
+                  alignment: Alignment.centerLeft,
+                  child: CircleAvatar(
+                    backgroundColor: Colors.grey,
+                    backgroundImage: NetworkImage(p.thumbnail),
+                    radius: 50,
+                  ),
                 ),
               ),
               Expanded(
@@ -239,32 +226,28 @@ class _MainPageState extends State<MainPage> {
                   margin: EdgeInsets.only(left: 10,top: 5),
                   child: Column(
                     children: [
-                      Container(
-                        child: Text(p.title,
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 20
-                                ),),
-                      ),
+                      Text(p.title,
+                              style:const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 20
+                              ),),
                       Expanded(
-                        child: Container(
-                          child: Text(p.description,
-                          overflow: TextOverflow.clip,
-                          style: TextStyle(
-                            fontSize: 14
-                          ),),
-                        ),
+                        child: Text(p.description,
+                        overflow: TextOverflow.clip,
+                        style: const TextStyle(
+                          fontSize: 14
+                        ),),
                       ),
                       Container(
                         alignment: Alignment.bottomCenter,
-                        child: Expanded(child: Row(
+                        child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
                             Text("\$"+p.price.toString(),style: TextStyle(fontSize: 12),),
                             Text("Rating : "+p.rating.toString(),
                             style: TextStyle(fontSize: 12),)
                           ],
-                        ),),
+                        ),
                       ),
                     ],
                   ),
